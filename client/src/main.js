@@ -25,5 +25,6 @@ new Vue({
   router,
   store,
   template: '<App/>',
+  rtl: true,
   components: { App }
 })

@@ -1,14 +1,14 @@
 <template>
   <v-layout column>
     <v-flex xs6 offset-xs3>
-      <panel title="Login">
+      <panel title="כניסה למערכת">
         <v-text-field
-          label="Email"
-          v-model="email"
+          label="שם משתמש"
+          v-model="username"
         ></v-text-field>
         <br>
         <v-text-field
-          label="Password"
+          label="ססמה"
           type="password"
           v-model="password"
         ></v-text-field>
@@ -19,7 +19,12 @@
           dark
           class="cyan"
           @click="login">
-          Login
+          התחברות למערכת
+        </v-btn>
+        <v-btn
+          class="cyan"
+          @click="login">
+          שכחתי ססמה
         </v-btn>
       </panel>
     </v-flex>
@@ -32,7 +37,7 @@ import AuthenticationService from '@/services/AuthenticationService'
 export default {
   data () {
     return {
-      email: '',
+      username: '',
       password: '',
       error: null
     }
@@ -41,7 +46,7 @@ export default {
     async login () {
       try {
         const response = await AuthenticationService.login({
-          email: this.email,
+          username: this.username,
           password: this.password
         })
         this.$store.dispatch('setToken', response.data.token)

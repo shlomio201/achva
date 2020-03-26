@@ -3,15 +3,36 @@ const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
 function jwtSignUser (user) {
-  const ONE_WEEK = 60 * 60 * 24 * 7
   return jwt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: ONE_WEEK
+    expiresIn: 60 * 60
   })
 }
 
 module.exports = {
   async register (req, res) {
     try {
+      const {username, email} = req.body
+      let searchuser = await User.findOne({
+        where: {
+          username: username
+        }
+      })
+      if (searchuser) {
+        return res.status(400).send({
+          error: 'שם משתמש כבר בשימוש'
+        })
+      }
+      searchuser = await User.findOne({
+        where: {
+          email: email
+        }
+      })
+      if (searchuser) {
+        return res.status(400).send({
+          error: 'כתובת המייל כבר בשימוש'
+        })
+      }
+
       const user = await User.create(req.body)
       const userJson = user.toJSON()
       res.send({
@@ -20,29 +41,29 @@ module.exports = {
       })
     } catch (err) {
       res.status(400).send({
-        error: 'This email account is already in use.'
+        error: 'שגיאה ביצירת משתמש חדש'
       })
     }
   },
   async login (req, res) {
     try {
-      const {email, password} = req.body
+      const {username, password} = req.body
       const user = await User.findOne({
         where: {
-          email: email
+          username: username
         }
       })
 
       if (!user) {
         return res.status(403).send({
-          error: 'The login information was incorrect'
+          error: 'לא נמצא מתמש בשם זה במערכת'
         })
       }
 
       const isPasswordValid = await user.comparePassword(password)
       if (!isPasswordValid) {
         return res.status(403).send({
-          error: 'The login information was incorrect'
+          error: 'ססמה לא נכונה'
         })
       }
 
@@ -53,7 +74,7 @@ module.exports = {
       })
     } catch (err) {
       res.status(500).send({
-        error: 'An error has occured trying to log in'
+        error: 'שגיאה בניסיון להתחבר למערכת'
       })
     }
   }

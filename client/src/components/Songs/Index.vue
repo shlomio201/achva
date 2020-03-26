@@ -1,5 +1,6 @@
 <template>
   <v-layout>
+     <page-header />
     <v-flex xs6 v-if="isUserLoggedIn">
       <songs-bookmarks />
       <recently-viewed-songs class="mt-2" />
@@ -16,6 +17,7 @@
 </template>
 
 <script>
+import PageHeader from '@/components/Header.vue'
 import SongsPanel from './SongsPanel'
 import SongsBookmarks from './SongsBookmarks'
 import RecentlyViewedSongs from './RecentlyViewedSongs'
@@ -25,6 +27,7 @@ import {mapState} from 'vuex'
 
 export default {
   components: {
+    PageHeader,
     SongsPanel,
     SongsSearchPanel,
     SongsBookmarks,

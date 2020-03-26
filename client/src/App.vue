@@ -1,8 +1,6 @@
 <template>
   <div id="app">
     <v-app>
-      <page-header />
-      
       <main>
         <v-container fluid>
           <router-view></router-view>
@@ -13,19 +11,21 @@
 </template>
 
 <script>
-import PageHeader from '@/components/Header.vue'
 
 export default {
   name: 'app',
   components: {
-    PageHeader
   }
 }
 </script>
 
 <style>
+body {
+  direction: rtl;
+}
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Rubik', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
